@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<object name="portal_types" meta_type="Plone Types Tool">
+ <property name="title">Controls the available content types in your portal</property>
+ <object name="artwork" meta_type="Dexterity FTI"/>
+ <object name="correspondence" meta_type="Dexterity FTI"/>
+ <object name="gallery" meta_type="Dexterity FTI"/>
+ <object name="archive" meta_type="Dexterity FTI"/>
+ <!-- -*- extra stuff goes here -*- -->
+</object>
