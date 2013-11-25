@@ -12,24 +12,18 @@
 
   <include package="plone.app.relationfield" />
 
-  <!-- Register a resource directory from which we can deploy static
-   resource files. -->
-  <browser:resourceDirectory
-    name="collective.correspondences"
-    directory="resources" />
-
   <i18n:registerTranslations directory="locales" />
 
   <!-- Register an extension profile to make the product installable
        in Plone -->
   <genericsetup:registerProfile
       name="default"
-      title="Gallery pfacilities featuring correspondences of artworks."
+      title="Gallery facilities featuring correspondences of artworks."
       directory="profiles/default"
       description="Extension profile for Gallery pfacilities featuring correspondences of artworks."
       provides="Products.GenericSetup.interfaces.EXTENSION"
       />
 
-  <!-- -*- extra stuff goes here -*- -->
+  <include package=".browser"/>
 
 </configure>
