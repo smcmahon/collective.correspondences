@@ -9,20 +9,35 @@
 
 <metal:content-core fill-slot="content-core">
     <metal:content-core define-macro="content-core">
-    TEST
 
-<div tal:content="context/title" />
-<div tal:content="context/description" />
 <img tal:replace="structure context/@@images/image/preview" />
-<div tal:content="context/artist" />
-<div tal:content="context/date" />
-<div tal:content="context/location" />
-<div tal:content="context/medium" />
-<div tal:content="context/photo_credit" />
-<div tal:replace="structure context/text/output | nothing" />
 
-
-
+<dl>
+    <tal:block tal:condition="context/artist | nothing">
+        <dt>Artist</dt>
+        <dl tal:content="context/artist" />
+    </tal:block>
+    <tal:block tal:condition="context/date | nothing">
+        <dt>Date</dt>
+        <dl tal:content="context/date" />
+    </tal:block>
+    <tal:block tal:condition="context/location | nothing">
+        <dt>Location</dt>
+        <dl tal:content="context/location" />
+    </tal:block>
+    <tal:block tal:condition="context/medium | nothing">
+        <dt>Medium</dt>
+        <dl tal:content="context/medium" />
+    </tal:block>
+    <tal:block tal:condition="context/photo_credit | nothing">
+        <dt>Photo Credit</dt>
+        <dl tal:content="context/photo_credit" />
+    </tal:block>
+    <tal:block tal:condition="context/text | nothing">
+        <dt>Notes</dt>
+        <dl tal:content="structure context/text/output" />
+    </tal:block>
+</dl>
 
     </metal:content-core>
 </metal:content-core>
