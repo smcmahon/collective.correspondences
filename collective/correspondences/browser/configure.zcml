@@ -11,4 +11,12 @@
     name="collective.correspondences"
     directory="resources" />
 
+  <browser:page
+    for="*"
+    class=".artwork.ArtworkView"
+    name="artwork_view"
+    template="artwork_view.pt"
+    permission="zope.Public"
+    />
+
 </configure>
