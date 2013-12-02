@@ -19,4 +19,20 @@
     permission="zope.Public"
     />
 
+  <browser:page
+    for="*"
+    class=".correspondence.CorrespondenceView"
+    name="correspondence_view"
+    template="correspondence_view.pt"
+    permission="zope.Public"
+    />
+
+  <browser:page
+    for="*"
+    class=".gallery.GalleryView"
+    name="gallery_view"
+    template="gallery_view.pt"
+    permission="zope.Public"
+    />
+
 </configure>

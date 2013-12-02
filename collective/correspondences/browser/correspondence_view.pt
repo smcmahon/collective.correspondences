@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:content-core fill-slot="content-core">
+    <metal:content-core define-macro="content-core">
+
+<style>
+.cdiv {
+    display: inline-block;
+}
+</style>
+
+<div>
+    <div tal:repeat="ref context/correspondence" class="cdiv">
+        <tal:block tal:define="item nocall:ref/to_object">
+            <img tal:replace="structure item/@@images/image/preview" />
+            <a tal:attributes="href item/absolute_url" title="More information..."><div tal:content="item/description" /></a>
+        </tal:block>
+    </div>
+</div>
+
+
+<dl>
+    <tal:block tal:condition="context/correspondence_credit | nothing">
+        <dt>Correspondence Credit</dt>
+        <dl tal:content="context/correspondence_credit" />
+    </tal:block>
+    <tal:block tal:condition="context/text | nothing">
+        <dt>Notes</dt>
+        <dl tal:content="structure context/text/output" />
+    </tal:block>
+</dl>
+
+    </metal:content-core>
+</metal:content-core>
+
+</body>
+</html>

@@ -1,0 +1,217 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:content-core fill-slot="content-core">
+    <metal:content-core define-macro="content-core">
+
+<script>
+$(function() {
+    // initialize scrollable
+    $("#navigator")
+        .scrollable()
+        .navigator();
+
+    var api = $("#navigator").data("scrollable");
+    
+    $(".items a").click(function(event) {
+    	event.preventDefault();
+
+    	// see if same thumb is being clicked
+    	if ($(this).hasClass("active")) { return; }
+      
+    	// activate item
+    	$(".items a").removeClass("active");
+    	$(this).addClass("active");
+    	
+    	// alert($(this).attr('href'));
+    	
+    	$('#image_wrap > *').fadeOut();
+    	$("#image_wrap").load($(this).attr('href') + " #content-core");
+    	
+    	if ((api.getIndex() > 0) || $('a.active').parent().prev('.citem').length) {
+    	    $('.previmage').show();
+    	} else {
+    	    $('.previmage').hide();
+    	}
+    	if ((api.getIndex() + 1 < api.getSize()) || $('a.active').parent().next('.citem').length) {
+    	    $('.nextimage').show();
+    	} else {
+    	    $('.nextimage').hide();
+    	}
+    	
+    }).filter(":first").click();
+
+    $(".nextimage").on('click', function(event) {
+        var active = $('.items a.active'),
+            next = active.parent().next('.citem');
+            
+        if (next.length) {
+            next.children('a').click();
+        } else {
+            if (api.getIndex() + 1 < api.getSize()) {
+                active.removeClass('active');
+                api.next();
+                $(api.getItems()[api.getIndex()]).find('a').first().click()
+            }
+        }
+    });
+    $(".previmage").on('click', function(event) {
+        var active = $('.items a.active'),
+            prev = active.parent().prev('.citem');
+            
+        if (prev.length) {
+            prev.children('a').click();
+        } else {
+            if (api.getIndex() > 0) {
+                active.removeClass('active');
+                api.prev();
+                $(api.getItems()[api.getIndex()]).find('a').last().click()
+            }
+        }
+    });
+
+});
+
+
+
+</script>
+
+<style>
+@import url(++resource++collective.correspondences/scrollable-navigator.css);
+@import url(++resource++collective.correspondences/scrollable-buttons.css);
+
+.items div.citem {
+    display: block;
+    float: left;
+    margin: 4px;
+    border: 1px solid #000;
+}
+.items a {
+    border: none !important;
+    text-decoration: none;
+    display: block;
+    line-height: 132px;
+    height: 132px;
+    padding: 4px 0 4px 4px;
+    background-color: #fff;
+}
+.items a.active {
+    background-color: #ccc;
+}
+.items a div {
+    float: left;
+    text-align: center;
+    padding-right: 4px;
+}
+.items a img {
+    vertical-align: middle;
+}
+.cblock {
+    width: 900px;
+    text-align: center;
+}
+
+/*
+root element for the scrollable.  when scrolling occurs this
+element stays still.
+*/
+.scrollable {
+  /* required settings */
+  position:relative;
+  overflow:hidden;
+  width: 900px;
+  height:190px;
+  border: 1px solid green;
+}
+ 
+/*
+root element for scrollable items. Must be absolutely positioned
+and it should have a extremely large width to accommodate scrollable
+items.  it's enough that you set width and height for the root element
+and not for this element.
+*/
+.scrollable .items {
+  /* this cannot be too large */
+  width:20000em;
+  position:absolute;
+}
+ 
+/*
+a single item. must be floated in horizontal scrolling.  typically,
+this element is the one that *you* will style the most.
+*/
+.items div {
+  float:left;
+}
+
+div.dblock {
+    display: inline-block;
+    float: none;
+}
+
+#image_wrap {
+    /* dimensions */
+    display: inline-block;
+    width: 820px;
+    height: 480px;
+    padding: 15px 0;
+ 
+    /* centered */
+    text-align:center;
+    
+    clear: both;
+ 
+    /* some "skinning" */
+    background-color:#efefef;
+    border:2px solid #fff;
+    outline:1px solid #ddd;
+    -moz-ouline-radius:4px;
+}
+.cdiv {
+    display: inline-block;
+}
+.nextimage, .previmage {
+    display: inline-block;
+    font-size: 200%;
+    width: 1em;
+    text-align: center;
+    cursor: pointer;
+}
+
+</style>
+<div class="previmage">&lt;</div>
+<div id="image_wrap">
+big
+</div>
+<div class="nextimage">&gt;</div>
+<br style="clear:both" />
+<a class="prev browse left">Left</a>
+<div class="scrollable" id="navigator">
+    <div class="items">
+        <div tal:repeat="block view/getCorrespondences" class="cblock"><div class="dblock">
+            <div tal:repeat="item block" class="citem">
+                <a tal:attributes="href item/url; title item/description">
+                    <div tal:repeat="tag item/image_tags">
+                        <img tal:replace="structure tag" />
+                    </div>
+                </a>
+            </div></div>
+        </div>
+    </div>
+</div>
+<a class="next browse right">Right</a>
+<div class="navi"></div>
+
+
+
+    </metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
