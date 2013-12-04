@@ -14,13 +14,33 @@
 .cdiv {
     display: inline-block;
 }
+.preview-image-wrapper {
+    height: 400px;
+}
+.preview-image-wrapper th {
+    height: 400px;
+    vertical-align: bottom;
+}
+.preview-image-wrapper td {
+    text-align: center;
+}
+.bdiv {
+    margin: 0 auto;
+}
 </style>
 
-<div>
+<div class="bdiv">
     <div tal:repeat="ref context/correspondence" class="cdiv">
         <tal:block tal:define="item nocall:ref/to_object">
-            <img tal:replace="structure item/@@images/image/preview" />
-            <a tal:attributes="href item/absolute_url" title="More information..."><div tal:content="item/description" /></a>
+            <table class="preview-image-wrapper">
+                <tr><th>
+                    <img tal:replace="structure item/@@images/image/preview" />
+                </th></tr>
+                <tr><td>
+                    <a tal:attributes="href item/absolute_url" title="More information..."><div tal:content="item/description" /></a>
+                </td></tr>
+            </table>
+
         </tal:block>
     </div>
 </div>

@@ -18,63 +18,67 @@ $(function() {
         .navigator();
 
     var api = $("#navigator").data("scrollable");
-    
-    $(".items a").click(function(event) {
+
+    $('table.citem').click(function(event) {
+        var jqthis = $(this),
+            url = jqthis.find('a').attr('href'),
+            image_wrap = $('#image_wrap');
+
     	event.preventDefault();
 
     	// see if same thumb is being clicked
     	if ($(this).hasClass("active")) { return; }
-      
+
     	// activate item
-    	$(".items a").removeClass("active");
-    	$(this).addClass("active");
-    	
-    	// alert($(this).attr('href'));
-    	
-    	$('#image_wrap > *').fadeOut();
-    	$("#image_wrap").load($(this).attr('href') + " #content-core");
-    	
-    	if ((api.getIndex() > 0) || $('a.active').parent().prev('.citem').length) {
+    	$(".citem").removeClass("active");
+    	jqthis.addClass("active");
+
+    	image_wrap.children().fadeOut();
+    	image_wrap.load(url + " #content-core > *");
+
+    	if ((api.getIndex() > 0) || jqthis.prev('.citem').length) {
     	    $('.previmage').show();
     	} else {
     	    $('.previmage').hide();
     	}
-    	if ((api.getIndex() + 1 < api.getSize()) || $('a.active').parent().next('.citem').length) {
+    	if ((api.getIndex() + 1 < api.getSize()) || $('table.active').next('.citem').length) {
     	    $('.nextimage').show();
     	} else {
     	    $('.nextimage').hide();
     	}
-    	
+
     }).filter(":first").click();
 
     $(".nextimage").on('click', function(event) {
-        var active = $('.items a.active'),
-            next = active.parent().next('.citem');
-            
+        var active = $('table.active'),
+            next = active.next('table.citem');
+
         if (next.length) {
-            next.children('a').click();
+            next.click();
         } else {
             if (api.getIndex() + 1 < api.getSize()) {
                 active.removeClass('active');
                 api.next();
-                $(api.getItems()[api.getIndex()]).find('a').first().click()
+                $(api.getItems()[api.getIndex()]).children().first().click()
             }
         }
     });
     $(".previmage").on('click', function(event) {
-        var active = $('.items a.active'),
-            prev = active.parent().prev('.citem');
-            
+        var active = $('table.active'),
+            prev = active.prev('table.citem');
+
         if (prev.length) {
-            prev.children('a').click();
+            prev.click();
         } else {
             if (api.getIndex() > 0) {
                 active.removeClass('active');
                 api.prev();
-                $(api.getItems()[api.getIndex()]).find('a').last().click()
+                $(api.getItems()[api.getIndex()]).children().last().click()
             }
         }
     });
+
+    $(".major_wrapper").fadeIn();
 
 });
 
@@ -86,34 +90,30 @@ $(function() {
 @import url(++resource++collective.correspondences/scrollable-navigator.css);
 @import url(++resource++collective.correspondences/scrollable-buttons.css);
 
-.items div.citem {
-    display: block;
-    float: left;
-    margin: 4px;
-    border: 1px solid #000;
-}
-.items a {
+.citem a {
     border: none !important;
     text-decoration: none;
-    display: block;
-    line-height: 132px;
-    height: 132px;
-    padding: 4px 0 4px 4px;
-    background-color: #fff;
 }
-.items a.active {
-    background-color: #ccc;
+table.citem {
+    background-color: #7A663B;
+}
+table.active {
+    background-color: #fff;
+    box-shadow: 0 0 20px #000;
 }
 .items a div {
     float: left;
     text-align: center;
     padding-right: 4px;
 }
-.items a img {
-    vertical-align: middle;
+.citem img {
+    vertical-align: bottom;
+}
+.citem a:first-child {
+  margin-right: 6px;
 }
 .cblock {
-    width: 900px;
+    width: 840px;
     text-align: center;
 }
 
@@ -125,11 +125,11 @@ element stays still.
   /* required settings */
   position:relative;
   overflow:hidden;
-  width: 900px;
-  height:190px;
-  border: 1px solid green;
+  width: 840px;
+  height: 152px;
+  background-color: #834B2D;
 }
- 
+
 /*
 root element for scrollable items. Must be absolutely positioned
 and it should have a extremely large width to accommodate scrollable
@@ -141,37 +141,53 @@ and not for this element.
   width:20000em;
   position:absolute;
 }
- 
+
 /*
 a single item. must be floated in horizontal scrolling.  typically,
 this element is the one that *you* will style the most.
 */
-.items div {
+.items .cblock {
   float:left;
+  width: 840px;
+  text-align: center;
+  padding: 6px 0;
+}
+table.citem {
+  display: inline-block;
+  padding: 6px;
+  margin: 0 6px 0 0;
+}
+table.citem:last-child {
+  margin: 0;
+}
+.items .citem tr {
+  vertical-align: bottom;
+}
+table.citem td {
+    height: 128px;
 }
 
-div.dblock {
+.navi {
+    width: auto;
+    margin: 0 auto;
     display: inline-block;
-    float: none;
 }
 
 #image_wrap {
     /* dimensions */
     display: inline-block;
-    width: 820px;
-    height: 480px;
+    width: 840px;
+    height: 420px;
     padding: 15px 0;
- 
-    /* centered */
+
     text-align:center;
-    
+
     clear: both;
- 
-    /* some "skinning" */
-    background-color:#efefef;
-    border:2px solid #fff;
-    outline:1px solid #ddd;
-    -moz-ouline-radius:4px;
+
+    background-color:#834B2D;
+}
+#image_wrap img {
+    box-shadow: 0 0 20px #000;
 }
 .cdiv {
     display: inline-block;
@@ -184,30 +200,48 @@ div.dblock {
     cursor: pointer;
 }
 
+#image_wrap td a {
+    color: #fff !important;
+}
+#image_wrap td {
+  padding-top: 12px;
+}
+.cdiv:first-child {
+    margin-right: 6px;
+}
 </style>
-<div class="previmage">&lt;</div>
-<div id="image_wrap">
-big
-</div>
-<div class="nextimage">&gt;</div>
-<br style="clear:both" />
-<a class="prev browse left">Left</a>
-<div class="scrollable" id="navigator">
-    <div class="items">
-        <div tal:repeat="block view/getCorrespondences" class="cblock"><div class="dblock">
-            <div tal:repeat="item block" class="citem">
-                <a tal:attributes="href item/url; title item/description">
-                    <div tal:repeat="tag item/image_tags">
-                        <img tal:replace="structure tag" />
-                    </div>
-                </a>
-            </div></div>
+
+<div tal:define="subgs python:context.getFolderContents(contentFilter={'portal_type':'gallery'})"
+     tal:condition="subgs">
+     <ul>
+        <li tal:repeat="subg subgs">
+            <a tal:content="subg/Title" tal:attributes="href subg/getURL" />
+        </li>
+    </ul>
+ </div>
+
+
+<div class="major_wrapper" style="display:none">
+    <div class="previmage">&lt;</div>
+    <div id="image_wrap">
+    </div>
+    <div class="nextimage">&gt;</div>
+    <br style="clear:both" />
+    <a class="prev browse left">Left</a>
+
+    <div class="scrollable" id="navigator">
+        <div class="items">
+            <div tal:repeat="block view/getCorrespondences" class="cblock">
+                <table class="citem" tal:repeat="item block"><tr>
+                    <td><a tal:attributes="href item/url; title item/description" tal:repeat="tag item/image_tags" ><img tal:replace="structure tag" /></a></td>
+                </tr></table>
+            </div>
         </div>
     </div>
-</div>
-<a class="next browse right">Right</a>
-<div class="navi"></div>
 
+    <a class="next browse right">Right</a>
+    <div class="navi"></div>
+</div>
 
 
     </metal:content-core>
