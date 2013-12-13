@@ -31,7 +31,7 @@ class ArchiveView(BrowserView):
                         rez.append((item.Title + ': General', cnode['depth'] + 1, ccount, item.getURL(), scount, sgalleries))
                     elif ccount:
                         rez.append((item.Title, cnode['depth'], ccount, item.getURL(), scount, sgalleries))
-                    else:
+                    elif scount:
                         rez.append((item.Title, cnode['depth'], scount, None, scount, sgalleries))
                     rez += clist
                 elif item.portal_type == 'correspondence':
