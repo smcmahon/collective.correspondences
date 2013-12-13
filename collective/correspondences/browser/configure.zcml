@@ -35,4 +35,12 @@
     permission="zope.Public"
     />
 
+  <browser:page
+    for="*"
+    class=".archive.ArchiveView"
+    name="archive_view"
+    template="archive_view.pt"
+    permission="zope.Public"
+    />
+
 </configure>

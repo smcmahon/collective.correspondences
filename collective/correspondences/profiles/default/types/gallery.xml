@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <object name="gallery" meta_type="Dexterity FTI" i18n:domain="plone"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title" i18n:translate="">Gallery</property>
+ <property name="title" i18n:translate="">Subject</property>
  <property name="description"
-    i18n:translate="">Folder containing correspondences or other galleries</property>
+    i18n:translate="">Folder containing correspondences or other subjects</property>
  <property name="icon_expr">string:${portal_url}/document_icon.png</property>
  <property name="factory">gallery</property>
  <property name="add_view_expr">string:${folder_url}/++add++gallery</property>

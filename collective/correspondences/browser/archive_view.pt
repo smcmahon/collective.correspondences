@@ -1,0 +1,51 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:content-core fill-slot="content-core">
+    <metal:content-core
+        define-macro="content-core"
+        tal:define="
+            sitemap view/siteMap;
+            galleries python:sitemap[0];
+            ctotal python:sitemap[1];
+            global depth python:0;
+        ">
+
+<div tal:content="structure context/text/output" tal:condition="context/text" />
+
+<div class="archive_list">
+    <tal:block tal:repeat="gallery galleries">
+        <tal:block
+            tal:define="
+                title python:gallery[0];
+                gdepth python:gallery[1];
+                ccount python:gallery[2];
+                url python:gallery[3];
+            ">
+            <tal:insert
+                tal:condition="python:gdepth &gt; depth"
+                tal:replace="structure string:<ul class='toggle depth${depth}'>" />
+            <tal:block tal:condition="python:gdepth &lt; depth">
+                <tal:loop
+                    tal:define="drange python:range(0, depth-gdepth)"
+                    tal:repeat="dcount drange"
+                    tal:content="structure string:</ul>" />
+            </tal:block>
+            <tal:def tal:define="global depth gdepth" />
+            <li tal:condition="url"><a tal:content="string:$title ($ccount)" tal:attributes="href url"/></li>
+            <li tal:condition="not:url" class="aparent"><span tal:replace="string:$title ($ccount)" tal:attributes="href url"/></li>
+        </tal:block>
+    </tal:block>
+</div>
+
+    </metal:content-core>
+</metal:content-core>
+
+</body>
+</html>
