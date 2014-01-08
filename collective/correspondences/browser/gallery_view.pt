@@ -38,15 +38,6 @@
 
 </div>
 
-<div tal:define="subgs python:context.getFolderContents(contentFilter={'portal_type':'gallery'})"
-     tal:condition="subgs">
-     <ul>
-        <li tal:repeat="subg subgs">
-            <a tal:content="subg/Title" tal:attributes="href subg/getURL" />
-        </li>
-    </ul>
- </div>
-
     </metal:content-core>
 </metal:content-core>
 

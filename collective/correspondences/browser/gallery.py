@@ -1,6 +1,7 @@
 from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 from zope.component import getMultiAdapter
+from correspondence import getScaledCorrespondenceImages
 
 
 BLOCK_SIZE = 3
@@ -28,15 +29,18 @@ class GalleryView(BrowserView):
             item['title'] = obj.title
             item['url'] = obj.absolute_url()
             item['description'] = obj.description
-            ctags = []
-            for artwork_ref in obj.correspondence:
-                aobj = artwork_ref.to_object
-                scales = getMultiAdapter(
-                    (aobj, self.request),
-                    name=u'images'
-                )
-                ctags.append(scales.tag('image', scale='thumb'))
-            item['image_tags'] = ctags
+            i0, i1 = getScaledCorrespondenceImages(obj.correspondence,
+                                                   max_dim=128)
+#            ctags = []
+#            for artwork_ref in obj.correspondence:
+#                aobj = artwork_ref.to_object
+#                scales = getMultiAdapter(
+#                    (aobj, self.request),
+#                    name=u'images'
+#                )
+#                ctags.append(scales.tag('image', scale='thumb'))
+#            item['image_tags'] = ctags
+            item['image_tags'] = [i0['img'].tag(), i1['img'].tag()]
             rez.append(item)
         # Break into groups for scrollable
         grouped = []
