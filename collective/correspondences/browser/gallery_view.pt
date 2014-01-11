@@ -15,7 +15,8 @@
 
 <div class="major_wrapper" style="display:none" tal:condition="blocks">
 
-    <a class="prev browse left" />
+	<div id="scrollable_wrapper">
+	<a class="prev browse left" />
     <div class="scrollable" id="navigator">
         <div class="items">
             <div tal:repeat="block blocks" class="cblock">
@@ -27,14 +28,17 @@
     </div>
     <a class="next browse right" />
     <div class="navi-wrapper"><div class="navi" /></div>
+    </div>
 
     <br style="clear:both" />
 
-    <div class="navimage"><div class="previmage" /></div>
+    <div id="preview_wrapper">
+    <div class="navimage left"><div class="previmage" /></div>
     <div id="image_wrap" />
-    <div class="navimage"><div class="nextimage" /></div>
-
+    <div class="navimage right"><div class="nextimage" /></div>
     <br style="clear:both" />
+    </div>
+
 
 </div>
 

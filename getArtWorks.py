@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 from plone.app.textfield.value import RichTextValue
 from plone.namedfile import NamedBlobImage
 from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.utils import safe_unicode
 from transaction import commit
 from zope.component import createObject
 from zope.component.hooks import setSite
@@ -80,7 +81,7 @@ for brain in artworks:
     done.add(id)
     newart = createObject('artwork')
     newart.title = id
-    newart.description = brain.Title
+    newart.description = safe_unicode(brain.Title)
     newart.id = id
     source = aw.getRawDescription()
     soup = BeautifulSoup(source)
@@ -90,7 +91,7 @@ for brain in artworks:
         els = [s for s in els if s]
         if len(els) > 1:
             key = els[0].lower()
-            value = els[1]
+            value = safe_unicode(els[1])
             if key in ids:
                 setattr(newart, ids[key], value)
             elif key == 'note' and value:

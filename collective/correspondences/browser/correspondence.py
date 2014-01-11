@@ -34,6 +34,8 @@ class CorrespondenceView(BrowserView):
     """ main view of a correspondence """
 
     def getSet(self, max_dim=400):
+        if max_dim == 400:
+            import pdb; pdb.set_trace()
 
         refs = self.context.correspondence
         if len(refs) != 2:
