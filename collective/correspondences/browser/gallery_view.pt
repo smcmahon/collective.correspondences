@@ -20,7 +20,7 @@
     <div class="scrollable" id="navigator">
         <div class="items">
             <div tal:repeat="block blocks" class="cblock">
-                <table class="citem" tal:repeat="item block"><tr>
+                <table class="citem" tal:repeat="item block" tal:attributes="id item/id"><tr>
                     <td><a tal:attributes="href item/url; title item/description" tal:repeat="tag item/image_tags" ><img tal:replace="structure tag" /></a></td>
                 </tr></table>
             </div>

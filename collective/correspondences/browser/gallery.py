@@ -29,6 +29,7 @@ class GalleryView(BrowserView):
             item['title'] = obj.title
             item['url'] = obj.absolute_url()
             item['description'] = obj.description
+            item['id'] = obj.getId()
             i0, i1 = getScaledCorrespondenceImages(obj.correspondence,
                                                    max_height=128)
 #            ctags = []
