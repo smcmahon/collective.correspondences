@@ -81,7 +81,8 @@ sections = getSections(site_outline)
 folder_stack = [target]
 last_depth = 0
 last_folder = target
-for gallery in sections:
+for section_position in range(0, len(sections)):
+    gallery = sections[section_position]
     depth = gallery['depth']
     title = gallery['title']
     if depth > last_depth:
@@ -92,9 +93,21 @@ for gallery in sections:
         last_depth -= 1
     context = folder_stack[-1]
     id = normalizer.normalize(title)
+    # Do we have child galleries? If so, we need to create a subject folder.
+    if section_position + 1 < len(sections) and sections[section_position +
+                                                         1]['depth'] > depth:
+        context.invokeFactory('subject_folder', id, title=title)
+        context = context[id]
+        title += ': General'
+        last_folder = context
+        print id, last_folder.absolute_url()
+    # do we have correspondences of our own?
+    if not gallery['currentSection']:
+        commit()
+        continue
     context.invokeFactory('gallery', id, title=title)
-    last_folder = context[id]
-    print id, last_folder,
+    current_subject = context[id]
+    print id, current_subject.absolute_url(),
     for correspondence in gallery['currentSection']:
         for citem in correspondence:
             if not citem:
@@ -118,7 +131,7 @@ for gallery in sections:
                     if s in metadata:
                         newc.credit = metadata[s]
             newc.correspondence = correspondence
-            last_folder[id] = newc
+            current_subject[id] = newc
             print id,
     print
     commit()

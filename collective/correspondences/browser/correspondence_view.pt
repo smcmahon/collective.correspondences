@@ -11,14 +11,22 @@
     <metal:content-core define-macro="content-core">
 
     <div class="bdiv" tal:define="iset view/getSet;">
-    <div class="cdiv">
             <table class="preview-image-wrapper" tal:condition="iset">
                 <tr>
-			<th tal:repeat="item iset" tal:attributes="style string:width:${item/img/width}px"><a tal:attributes="href item/obj/absolute_url"><img tal:replace="structure python:item['img'].tag(title=item['obj'].Description()+'; '+item['obj'].artist)" /></a></th>
+			<th>&nbsp;</th>
+			<tal:block tal:repeat="item iset">
+			<th tal:attributes="style string:width:${item/img/width}px"><a tal:attributes="href item/obj/absolute_url"><img tal:replace="structure python:item['img'].tag(title='More information')" /></a>
+				<div>
+					<a tal:attributes="href item/obj/absolute_url" tal:content="item/obj/description" title="More information" />
+				</div>
+				<div>
+					<a tal:attributes="href item/obj/absolute_url" tal:content="item/obj/artist" title="More information" />
+				</div>
+			</th>
+			<th>&nbsp;</th>
+			</tal:block>
                 </tr>
             </table>
-
-    </div>
 </div>
 
 
