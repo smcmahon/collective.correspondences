@@ -20,23 +20,21 @@ class ArchiveView(BrowserView):
             galleries = 0
             for cnode in node['children']:
                 item = cnode['item']
-                if item.portal_type == 'gallery':
+                # if item.portal_type == 'gallery':
+                if item.portal_type in ('gallery', 'subject_folder'):
                     galleries += 1
                     clist, ccount, scount, sgalleries = getChildren(cnode)
-                    sub_correspondences += ccount
-                    if sgalleries and ccount:
-                        # we're a gallery of galleries and have our own
-                        # correspondences.
-                        rez.append((item.Title, cnode['depth'], ccount + scount, None, scount, sgalleries))
-                        rez.append((item.Title + ': General', cnode['depth'] + 1, ccount, item.getURL(), scount, sgalleries))
-                    elif ccount:
+                    # if ccount and scount:
+                    #     import pdb; pdb.set_trace()
+                    sub_correspondences += ccount + scount
+                    if ccount:
                         rez.append((item.Title, cnode['depth'], ccount, item.getURL(), scount, sgalleries))
                     elif scount:
                         rez.append((item.Title, cnode['depth'], scount, None, scount, sgalleries))
                     rez += clist
                 elif item.portal_type == 'correspondence':
                     my_correspondences += 1
-            return rez, my_correspondences, sub_correspondences + my_correspondences, galleries
+            return rez, my_correspondences, sub_correspondences, galleries
 
         context = aq_inner(self.context)
 
@@ -47,7 +45,7 @@ class ArchiveView(BrowserView):
             'sort_on': 'getObjPositionInParent',
             'path': {'query': '/colonialart/archive', 'depth': 50},
             'sort_order': 'asc',
-            'portal_type': ['gallery', 'correspondence']}
+            'portal_type': ['subject_folder', 'gallery', 'correspondence']}
 
         # strategy = getMultiAdapter((context, self), INavtreeStrategy)
 
