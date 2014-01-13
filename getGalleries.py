@@ -125,11 +125,11 @@ for section_position in range(0, len(sections)):
                     print "Missing:", artwork.getId()
                     continue
                 correspondence.append(RelationValue(intids.getId(work_obj)))
-                # Look for a correspondence credit
-                metadata = getArtworkMetadata(artwork)
-                for s in ('correspondance credit', 'correspondence credit', 'correspondence source'):
-                    if s in metadata:
-                        newc.credit = metadata[s]
+                # # Look for a correspondence credit
+                # metadata = getArtworkMetadata(artwork)
+                # for s in ('correspondance credit', 'correspondence credit', 'correspondence source'):
+                #     if s in metadata:
+                #         newc.credit = metadata[s]
             newc.correspondence = correspondence
             current_subject[id] = newc
             print id,

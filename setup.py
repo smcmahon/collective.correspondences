@@ -29,6 +29,7 @@ setup(name='collective.correspondences',
           'plone.app.dexterity [relations]',
           'plone.app.relationfield',
           'plone.namedfile [blobs]',
+          'collective.dexteritytextindexer',
           # -*- Extra requirements: -*-
       ],
       entry_points="""

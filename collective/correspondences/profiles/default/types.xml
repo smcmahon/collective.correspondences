@@ -5,5 +5,6 @@
  <object name="correspondence" meta_type="Dexterity FTI"/>
  <object name="gallery" meta_type="Dexterity FTI"/>
  <object name="archive" meta_type="Dexterity FTI"/>
+ <object name="subject_folder" meta_type="Dexterity FTI"/>
  <!-- -*- extra stuff goes here -*- -->
 </object>

@@ -39,6 +39,9 @@ ids = {
     'photo credit': 'photo_credit',
     'photo source': 'photo_credit',
     'photosource': 'photo_credit',
+    'correspondence credit': 'credit',
+    'correspondance credit': 'credit',
+    'correspondence source': 'credit',
 }
 
 # if an image exceeds these dimensions, it will be checked

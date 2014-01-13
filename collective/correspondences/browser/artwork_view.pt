@@ -37,6 +37,10 @@
         <dt>Photo Credit</dt>
         <dl tal:content="context/photo_credit" />
     </tal:block>
+    <tal:block tal:condition="context/credit | nothing">
+        <dt>Correspondence Credit</dt>
+        <dl tal:content="context/credit" />
+    </tal:block>
     <tal:block tal:condition="context/text | nothing">
         <dt>Notes</dt>
         <dl tal:content="structure context/text/output" />

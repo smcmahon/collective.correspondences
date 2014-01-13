@@ -43,7 +43,7 @@ class ArchiveView(BrowserView):
 
         query = {
             'sort_on': 'getObjPositionInParent',
-            'path': {'query': '/colonialart/archive', 'depth': 50},
+            'path': {'query': '/'.join(context.getPhysicalPath()), 'depth': 50},
             'sort_order': 'asc',
             'portal_type': ['subject_folder', 'gallery', 'correspondence']}
 
