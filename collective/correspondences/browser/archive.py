@@ -20,17 +20,16 @@ class ArchiveView(BrowserView):
             galleries = 0
             for cnode in node['children']:
                 item = cnode['item']
-                # if item.portal_type == 'gallery':
                 if item.portal_type in ('gallery', 'subject_folder'):
                     galleries += 1
                     clist, ccount, scount, sgalleries = getChildren(cnode)
                     # if ccount and scount:
                     #     import pdb; pdb.set_trace()
                     sub_correspondences += ccount + scount
-                    if ccount:
-                        rez.append((item.Title, cnode['depth'], ccount, item.getURL(), scount, sgalleries))
-                    elif scount:
+                    if scount:
                         rez.append((item.Title, cnode['depth'], scount, None, scount, sgalleries))
+                    else:
+                        rez.append((item.Title, cnode['depth'], ccount, item.getURL(), scount, sgalleries))
                     rez += clist
                 elif item.portal_type == 'correspondence':
                     my_correspondences += 1

@@ -14,8 +14,14 @@
 
 <h1 tal:content="context/description" />
 
-<img tal:replace="structure context/@@images/image/large" />
+<a
+    tal:attributes="href string:${context/absolute_url}/@@images/image"
+    title="Full size display"
+    tal:omit-tag="python:max(context.image.getImageSize()) &lt; 768">
+    <img tal:replace="structure context/@@images/image/large" />
+</a>
 
+<div>
 <dl>
     <tal:block tal:condition="context/artist | nothing">
         <dt>Artist</dt>
@@ -34,19 +40,26 @@
         <dl tal:content="context/medium" />
     </tal:block>
     <tal:block tal:condition="context/photo_credit | nothing">
-        <dt>Photo Credit</dt>
+        <dt>Photo</dt>
         <dl tal:content="context/photo_credit" />
     </tal:block>
     <tal:block tal:condition="context/credit | nothing">
-        <dt>Correspondence Credit</dt>
+        <dt>Correspondence</dt>
         <dl tal:content="context/credit" />
     </tal:block>
     <tal:block tal:condition="context/text | nothing">
         <dt>Notes</dt>
         <dl tal:content="structure context/text/output" />
     </tal:block>
-    <dt>Colonial Art ID</dt><dl tal:content="context/title" />
+    <dt>Item</dt><dl tal:content="context/title" />
+    <dt>Correspondences</dt>
+    <dl tal:repeat="item view/getRelationsTo">
+        <a tal:attributes="href item/url" tal:content="item/title">
+            Correspondence link
+        </a>
+    </dl>
 </dl>
+</div>
 <br style="clear:both" />
 </div>
 
