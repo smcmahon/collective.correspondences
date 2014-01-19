@@ -102,9 +102,9 @@ for section_position in range(0, len(sections)):
         last_folder = context
         print id, last_folder.absolute_url()
     # do we have correspondences of our own?
-    if not gallery['currentSection']:
-        commit()
-        continue
+    # if not gallery['currentSection']:
+    #     commit()
+    #     continue
     context.invokeFactory('gallery', id, title=title)
     current_subject = context[id]
     print id, current_subject.absolute_url(),
