@@ -22,7 +22,7 @@
 </a>
 
 <div>
-<dl>
+<dl tal:condition="nothing">
     <tal:block tal:condition="context/artist | nothing">
         <dt>Artist</dt>
         <dl tal:content="context/artist" />
@@ -52,8 +52,13 @@
         <dl tal:content="structure context/text/output" />
     </tal:block>
     <dt>Item</dt><dl tal:content="context/title" />
+</dl>
+
+<div tal:content="structure context/text/output" />
+
+<dl tal:define="relations view/getRelationsTo" tal:condition="relations">
     <dt>Correspondences</dt>
-    <dl tal:repeat="item view/getRelationsTo">
+    <dl tal:repeat="item relations">
         <a tal:attributes="href item/url" tal:content="item/title">
             Correspondence link
         </a>

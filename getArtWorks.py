@@ -7,6 +7,9 @@ from transaction import commit
 from zope.component import createObject
 from zope.component.hooks import setSite
 
+import re
+import plone.app.uuid.utils as uuid_utils
+
 """
 artist  4584
 correspondance credit   3
@@ -65,8 +68,17 @@ def scaleImage(imageField, imageItem):
 
 site = app.Main
 pc = site.portal_catalog
-
 target_site = app.colonialart
+
+
+def resolveUID(mo):
+    setSite(site)
+    new_path = uuid_utils.uuidToPhysicalPath(mo.group(1))
+    setSite(target_site)
+    new_path = new_path.replace('/Main', '').replace('/images', '/artworks').replace('.jpg', '').replace('.jpeg', '')
+    return new_path
+
+
 setSite(target_site)
 target_folder = target_site.artworks
 
@@ -88,6 +100,7 @@ for brain in artworks:
     newart.id = id
     source = aw.getRawDescription()
     soup = BeautifulSoup(source)
+    notes = u''
     for row in soup.find_all('tr'):
         els = row.get_text().split('\n')
         els = [s.replace(u'\xa0', ' ').strip() for s in els]
@@ -95,11 +108,18 @@ for brain in artworks:
         if len(els) > 1:
             key = els[0].lower()
             value = safe_unicode(els[1])
-            if key in ids:
+            if key == 'artist':
                 setattr(newart, ids[key], value)
-            elif key == 'note' and value:
-                newart.text = RichTextValue(value, 'text/html', 'text/html')
-                print "Note",
+            notes += safe_unicode(str(row))
+            # if key in ids:
+            #     setattr(newart, ids[key], value)
+            # elif key == 'note' and value:
+            #     newart.text = RichTextValue(value, 'text/html', 'text/html')
+            #     # print "Note",
+    if notes:
+        re.compile(r'resolveuid/([0-9a-f]+)').sub(resolveUID, notes)
+        notes = u"<table>%s</table>" % notes
+        newart.text = RichTextValue(notes, 'text/html', 'text/html')
     awImageField = awImageItem.Schema().get('image')
     image = NamedBlobImage()
     image.data = scaleImage(awImageField, awImageItem)
@@ -111,6 +131,9 @@ for brain in artworks:
         filename = id
     newart.image = image
     target_folder[id] = newart
-    print id
+    print id,
+    if u'href' in notes:
+        print 'href'
+    else:
+        print
 commit()
-
