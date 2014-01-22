@@ -10,7 +10,13 @@
 <metal:content-core fill-slot="content-core">
     <metal:content-core define-macro="content-core">
 
-<div class="artwork_view">
+<div class="artwork_view"
+    tal:define="scales context/@@images;
+                imglarge python:scales.scale('image', scale='large');
+                img_wide python:imglarge.width &gt; 520 and 'wide' or 'narrow';
+    "
+    tal:attributes="class img_wide"
+    >
 
 <h1 tal:content="context/description" />
 
@@ -18,10 +24,10 @@
     tal:attributes="href string:${context/absolute_url}/@@images/image"
     title="Full size display"
     tal:omit-tag="python:max(context.image.getImageSize()) &lt; 768">
-    <img tal:replace="structure context/@@images/image/large" />
+    <img tal:replace="structure imglarge/tag" />
 </a>
 
-<div>
+<div class="detail">
 <dl tal:condition="nothing">
     <tal:block tal:condition="context/artist | nothing">
         <dt>Artist</dt>

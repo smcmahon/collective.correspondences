@@ -32,6 +32,7 @@
 
     <br style="clear:both" />
 
+    <h1 id="ctitle"> </h1>
     <div id="preview_wrapper">
     <div class="navimage left"><div class="previmage" /></div>
     <div id="image_wrap" />
