@@ -102,24 +102,47 @@ for brain in artworks:
     soup = BeautifulSoup(source)
     notes = u''
     for row in soup.find_all('tr'):
-        els = row.get_text().split('\n')
-        els = [s.replace(u'\xa0', ' ').strip() for s in els]
-        els = [s for s in els if s]
-        if len(els) > 1:
-            key = els[0].lower()
-            value = safe_unicode(els[1])
-            if key == 'artist':
-                setattr(newart, ids[key], value)
-            notes += safe_unicode(str(row))
-            # if key in ids:
-            #     setattr(newart, ids[key], value)
-            # elif key == 'note' and value:
-            #     newart.text = RichTextValue(value, 'text/html', 'text/html')
-            #     # print "Note",
-    if notes:
-        re.compile(r'resolveuid/([0-9a-f]+)').sub(resolveUID, notes)
-        notes = u"<table>%s</table>" % notes
-        newart.text = RichTextValue(notes, 'text/html', 'text/html')
+        dt = u''
+        dd = u''
+        for col in row.find_all('td'):
+            contents = col.renderContents()
+            contents = re.sub(r"\</?(strong|em)\>", '', contents)
+            contents = re.sub(r"^(\<br */?\>)+", '', contents)
+            contents = re.sub(r"(\<br */?\>)+$", '', contents)
+            contents = contents.replace('\xc2\xa0', ' ').strip()
+            contents = re.sub(r'resolveuid/([0-9a-f]+)', resolveUID, contents)
+            contents = safe_unicode(contents)
+            if dt:
+                if dd:
+                    dd += u' '
+                dd += contents
+            else:
+                dt += contents
+                if dt.lower() == u'artist':
+                    newart.artist = dt
+        notes += u"<dt>%s</dt><dd>%s</dd>" % (dt, dd)
+
+    #     els = row.get_text().split('\n')
+    #     els = [s.replace(u'\xa0', ' ').strip() for s in els]
+    #     els = [s for s in els if s]
+    #     if len(els) > 1:
+    #         key = els[0].lower()
+    #         value = safe_unicode(els[1])
+    #         if key == 'artist':
+    #             setattr(newart, ids[key], value)
+    #         notes += safe_unicode(str(row))
+    #         # if key in ids:
+    #         #     setattr(newart, ids[key], value)
+    #         # elif key == 'note' and value:
+    #         #     newart.text = RichTextValue(value, 'text/html', 'text/html')
+    #         #     # print "Note",
+    # if notes:
+    #     re.compile(r'resolveuid/([0-9a-f]+)').sub(resolveUID, notes)
+    #     notes = u"<table>%s</table>" % notes
+    #     newart.text = RichTextValue(notes, 'text/html', 'text/html')
+
+    notes = u"<dl>%s</dl>" % notes
+    newart.text = RichTextValue(notes, 'text/html', 'text/html')
     awImageField = awImageItem.Schema().get('image')
     image = NamedBlobImage()
     image.data = scaleImage(awImageField, awImageItem)

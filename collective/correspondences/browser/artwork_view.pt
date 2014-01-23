@@ -64,11 +64,11 @@
 
 <dl tal:define="relations view/getRelationsTo" tal:condition="relations">
     <dt>Correspondences</dt>
-    <dl tal:repeat="item relations">
+    <dd tal:repeat="item relations">
         <a tal:attributes="href item/url" tal:content="item/title">
             Correspondence link
         </a>
-    </dl>
+    </dd>
 </dl>
 </div>
 <br style="clear:both" />
