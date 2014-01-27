@@ -52,4 +52,11 @@
     permission="zope.Public"
     />
 
+  <browser:page
+    for="*"
+    name="artworks-search"
+    template="artworks_view.pt"
+    permission="zope.Public"
+    />
+
 </configure>

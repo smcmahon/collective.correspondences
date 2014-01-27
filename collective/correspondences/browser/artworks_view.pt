@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<metal:content-core fill-slot="content-core">
+    <metal:content-core
+        define-macro="content-core">
+
+<form name="searchform"
+      action="@@search"
+      xclass="searchPage enableAutoFocus"
+      tal:attributes="action string:${context/@@plone_portal_state/portal_url}/@@search">
+
+    <input type="hidden" name="portal_type:list" value="artwork" />
+    <input type="hidden" name="advanced_search" value="False" />
+
+    <fieldset id="artworks-search-field" i18n:domain="plone" class="noborder">
+
+        <h2>Search PESSCA art works</h2>
+
+        <label for="searchableText">Full text</label>
+        <input class="searchPage"
+               name="SearchableText"
+               type="text"
+               size="25"
+               title="Search Site"
+               i18n:attributes="title title_search_title;"
+               />
+        <div class="visualClear"><!-- --></div>
+
+        <h3>Or</h3>
+
+        <label for="artist">Artist</label>
+        <select name="artist">
+            <option value="">Any</option>
+            <option tal:repeat="artist python:context.portal_catalog.uniqueValuesFor('artist')" tal:content="artist" />
+        </select>
+
+        <div class="visualClear"><!-- --></div>
+
+        <input class="searchPage searchButton allowMultiSubmit"
+               type="submit"
+               value="Search"
+               i18n:attributes="value label_search;"/>
+
+    </fieldset>
+
+
+</form>
+
+
+    </metal:content-core>
+</metal:content-core>
+
+</body>
+</html>

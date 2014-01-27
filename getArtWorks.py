@@ -116,10 +116,10 @@ for brain in artworks:
                 if dd:
                     dd += u' '
                 dd += contents
+                if dt.lower() == u'artist':
+                    newart.artist = safe_unicode(col.text)
             else:
                 dt += contents
-        if dt.lower() == u'artist':
-            newart.artist = dd
         notes += u"<dt>%s</dt><dd>%s</dd>" % (dt, dd)
 
     #     els = row.get_text().split('\n')

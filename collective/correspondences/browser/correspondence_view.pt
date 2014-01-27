@@ -16,12 +16,14 @@
                 <tr>
 			<th>&nbsp;</th>
 			<tal:block tal:repeat="item iset">
-			<th tal:attributes="style string:width:${item/img/width}px"><a tal:attributes="href item/obj/absolute_url"><img tal:replace="structure python:item['img'].tag(title='More information')" /></a>
+			<th tal:attributes="style string:width:${item/img/width}px"><a style="border:none !important;"  tal:attributes="href item/obj/absolute_url"><img tal:replace="structure python:item['img'].tag(title='More information')" /></a>
 				<div>
 					<a style="border:none !important;" tal:attributes="href item/obj/absolute_url" tal:content="item/obj/description" title="More information" />
 				</div>
 				<div>
-					<a tal:attributes="href item/obj/absolute_url" tal:content="item/obj/artist" title="More information" />
+					<a class="nooverlay"
+                        tal:attributes="href string:${context/@@plone_portal_state/portal_url}/@@search?artist=${item/obj/artist}"
+                        tal:content="item/obj/artist" title="Works by this artist" />
 				</div>
 			</th>
 			<th>&nbsp;</th>
