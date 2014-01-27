@@ -21,6 +21,15 @@
 
   <browser:page
     for="*"
+    class=".artwork.ArtworkView"
+    name="artwork_zoom"
+    template="artwork_zoom.pt"
+    permission="zope.Public"
+    />
+
+
+  <browser:page
+    for="*"
     class=".correspondence.CorrespondenceView"
     name="correspondence_view"
     template="correspondence_view.pt"

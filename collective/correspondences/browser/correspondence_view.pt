@@ -18,7 +18,7 @@
 			<tal:block tal:repeat="item iset">
 			<th tal:attributes="style string:width:${item/img/width}px"><a tal:attributes="href item/obj/absolute_url"><img tal:replace="structure python:item['img'].tag(title='More information')" /></a>
 				<div>
-					<a tal:attributes="href item/obj/absolute_url" tal:content="item/obj/description" title="More information" />
+					<a style="border:none !important;" tal:attributes="href item/obj/absolute_url" tal:content="item/obj/description" title="More information" />
 				</div>
 				<div>
 					<a tal:attributes="href item/obj/absolute_url" tal:content="item/obj/artist" title="More information" />

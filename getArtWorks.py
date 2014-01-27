@@ -118,8 +118,8 @@ for brain in artworks:
                 dd += contents
             else:
                 dt += contents
-                if dt.lower() == u'artist':
-                    newart.artist = dt
+        if dt.lower() == u'artist':
+            newart.artist = dd
         notes += u"<dt>%s</dt><dd>%s</dd>" % (dt, dd)
 
     #     els = row.get_text().split('\n')
