@@ -4,9 +4,14 @@
       xmlns:i18n="http://xml.zope.org/namespaces/i18n"
       lang="en"
       i18n:domain="plone">
-<body style="background-color:white;text-align:center;">
+<body style="background-color:white;text-align:center;"
+    tal:define="image_size python:context.image.getImageSize();
+                wofs python: 0.0 - image_size[0] / 2;
+                vofs python: 0.0 - image_size[1] / 2;">
 
+<div tal:attributes="style string:position:absolute;; top:50%;; margin-top:${vofs}px;; left: 50%;; margin-left: ${wofs}px">
 <img tal:attributes="src string:${context/absolute_url}/@@images/image; title context/description; alt context/title" />
+</div>
 
 </body>
 </html>

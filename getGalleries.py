@@ -109,9 +109,9 @@ for section_position in range(0, len(sections)):
         context.invokeFactory('gallery', id, title=title)
         current_subject = context[id]
         print id, current_subject.absolute_url(),
-    else:
-        commit()
-        continue
+    # else:
+    #     commit()
+    #     continue
     for correspondence in gallery['currentSection']:
         for citem in correspondence:
             if not citem:

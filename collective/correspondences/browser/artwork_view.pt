@@ -24,7 +24,7 @@
     tal:attributes="href string:${context/absolute_url}/artwork_zoom"
     title="Full size display"
     target="_blank"
-    tal:omit-tag="python:max(context.image.getImageSize()) &lt; 768">
+    tal:omit-tag="python:max(context.image.getImageSize()) &lt; 730">
     <img tal:replace="structure imglarge/tag" />
 </a>
 

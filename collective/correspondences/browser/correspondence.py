@@ -2,9 +2,9 @@ from Products.Five.browser import BrowserView
 
 def scaleBoth(c0, c1, max_width, max_height):
     scaling = c0.restrictedTraverse('@@images')
-    i0 = scaling.scale(fieldname='image', width=max_width, height=max_height) 
+    i0 = scaling.scale(fieldname='image', width=max_width, height=max_height)
     scaling = c1.restrictedTraverse('@@images')
-    i1 = scaling.scale(fieldname='image', width=max_width, height=i0.height) 
+    i1 = scaling.scale(fieldname='image', width=max_width, height=i0.height)
     return [{'img': i0, 'obj': c0}, {'img': i1, 'obj': c1}]
 
 
@@ -18,6 +18,9 @@ def getScaledCorrespondenceImages(refs, max_height, max_wide=0):
     s0 = c0.image.getImageSize()
     c1 = refs[1].to_object
     s1 = c1.image.getImageSize()
+
+    # we will never enlarge images to meet max_height
+    max_height = min(max_height, min(s0[1], s1[1]))
 
     # compute dimensions of target images
 
@@ -35,9 +38,9 @@ def getScaledCorrespondenceImages(refs, max_height, max_wide=0):
 
     # and create the images
     scaling = c0.restrictedTraverse('@@images')
-    i0 = scaling.scale(fieldname='image', width=t0[0], height=t0[1]) 
+    i0 = scaling.scale(fieldname='image', width=t0[0], height=t0[1])
     scaling = c1.restrictedTraverse('@@images')
-    i1 = scaling.scale(fieldname='image', width=t1[0], height=t1[1]) 
+    i1 = scaling.scale(fieldname='image', width=t1[0], height=t1[1])
 
     return [{'img': i0, 'obj': c0}, {'img': i1, 'obj': c1}]
 

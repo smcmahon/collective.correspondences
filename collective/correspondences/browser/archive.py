@@ -26,7 +26,7 @@ class ArchiveView(BrowserView):
                     # if ccount and scount:
                     #     import pdb; pdb.set_trace()
                     sub_correspondences += ccount + scount
-                    if scount:
+                    if scount or sgalleries:
                         rez.append((item.Title, cnode['depth'], scount, None, scount, sgalleries))
                     else:
                         rez.append((item.Title, cnode['depth'], ccount, item.getURL(), scount, sgalleries))
