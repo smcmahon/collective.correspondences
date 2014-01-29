@@ -24,11 +24,13 @@
     tal:attributes="href string:${context/absolute_url}/artwork_zoom"
     title="Full size display"
     target="_blank"
-    tal:omit-tag="python:max(context.image.getImageSize()) &lt; 730">
+    tal:omit-tag="python:max(context.image.getImageSize()) &lt; 690">
     <img tal:replace="structure imglarge/tag" />
 </a>
 
-<div class="detail">
+<div class="detail"
+    tal:attributes="style python: 'width: %spx' % (800 - imglarge.width)">
+
 <dl tal:condition="nothing">
     <tal:block tal:condition="context/artist | nothing">
         <dt>Artist</dt>
@@ -61,7 +63,7 @@
     <dt>Item</dt><dl tal:content="context/title" />
 </dl>
 
-<div tal:content="structure context/text/output" />
+<div tal:content="structure context/text/output"/>
 
 <dl tal:define="relations view/getRelationsTo" tal:condition="relations">
     <dt>Correspondences</dt>

@@ -107,8 +107,8 @@ for brain in artworks:
         for col in row.find_all('td'):
             contents = col.renderContents()
             contents = re.sub(r"\</?(strong|em)\>", '', contents)
-            contents = re.sub(r"^(\<br */?\>)+", '', contents)
-            contents = re.sub(r"(\<br */?\>)+$", '', contents)
+            contents = re.sub(r"\<br */?\>", ' ', contents)
+            # contents = re.sub(r"(\<br */?\>)+$", '', contents)
             contents = contents.replace('\xc2\xa0', ' ').strip()
             contents = re.sub(r'resolveuid/([0-9a-f]+)', resolveUID, contents)
             contents = safe_unicode(contents)
