@@ -29,7 +29,7 @@
 </a>
 
 <div class="detail"
-    tal:attributes="style python: 'width: %spx' % (800 - imglarge.width)">
+    tal:attributes="style python: (img_wide == 'narrow') and 'width:%spx' % (800 - imglarge.width)">
 
 <dl tal:condition="nothing">
     <tal:block tal:condition="context/artist | nothing">
