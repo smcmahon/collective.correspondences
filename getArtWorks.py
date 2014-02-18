@@ -69,6 +69,7 @@ def scaleImage(imageField, imageItem):
 site = app.Main
 pc = site.portal_catalog
 target_site = app.colonialart
+tpc = target_site.portal_catalog
 
 
 def resolveUID(mo):
@@ -94,6 +95,7 @@ for brain in artworks:
     if id in done:
         continue
     done.add(id)
+    setSite(target_site)
     newart = createObject('artwork')
     newart.title = id
     newart.description = safe_unicode(brain.Title)
@@ -141,6 +143,7 @@ for brain in artworks:
     #     notes = u"<table>%s</table>" % notes
     #     newart.text = RichTextValue(notes, 'text/html', 'text/html')
 
+    setSite(target_site)
     notes = u"<dl>%s</dl>" % notes
     newart.text = RichTextValue(notes, 'text/html', 'text/html')
     awImageField = awImageItem.Schema().get('image')

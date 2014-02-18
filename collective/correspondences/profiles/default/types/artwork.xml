@@ -27,10 +27,10 @@
      value="collective.dexteritytextindexer.behavior.IDexterityTextIndexer"/>
  </property>
  <property name="schema"></property>
- <property
-    name="model_source">&lt;model xmlns:indexer="http://namespaces.plone.org/supermodel/indexer" xmlns:security="http://namespaces.plone.org/supermodel/security" xmlns:marshal="http://namespaces.plone.org/supermodel/marshal" xmlns:form="http://namespaces.plone.org/supermodel/form" xmlns="http://namespaces.plone.org/supermodel/schema"&gt;
+ <property name="model_source">&lt;?xml version='1.0' encoding='utf8'?&gt;
+  &lt;model xmlns:indexer="http://namespaces.plone.org/supermodel/indexer" xmlns:security="http://namespaces.plone.org/supermodel/security" xmlns:marshal="http://namespaces.plone.org/supermodel/marshal" xmlns:form="http://namespaces.plone.org/supermodel/form" xmlns="http://namespaces.plone.org/supermodel/schema"&gt;
     &lt;schema&gt;
-      &lt;field name="image" type="plone.namedfile.field.NamedBlobImage"&gt;
+      &lt;field name="image" type="plone.namedfile.field.NamedBlobImage" marshal:primary="true"&gt;
         &lt;description/&gt;
         &lt;title&gt;Image&lt;/title&gt;
       &lt;/field&gt;
@@ -49,22 +49,22 @@
   &amp;lt;/tr&amp;gt;&amp;#13;
   &amp;lt;tr&amp;gt;&amp;#13;
   &amp;lt;td align="right"&amp;gt;Title&amp;lt;/td&amp;gt;&amp;#13;
-  &amp;lt;td&amp;gt;&amp;#160;&amp;lt;/td&amp;gt;&amp;#13;
+  &amp;lt;td&amp;gt; &amp;lt;/td&amp;gt;&amp;#13;
   &amp;lt;td&amp;gt;xxx&amp;lt;/td&amp;gt;&amp;#13;
   &amp;lt;/tr&amp;gt;&amp;#13;
   &amp;lt;tr&amp;gt;&amp;#13;
   &amp;lt;td align="right"&amp;gt;Date&amp;lt;/td&amp;gt;&amp;#13;
-  &amp;lt;td&amp;gt;&amp;#160;&amp;#160;&amp;lt;/td&amp;gt;&amp;#13;
+  &amp;lt;td&amp;gt;  &amp;lt;/td&amp;gt;&amp;#13;
   &amp;lt;td&amp;gt;xxx&amp;lt;/td&amp;gt;&amp;#13;
   &amp;lt;/tr&amp;gt;&amp;#13;
   &amp;lt;tr&amp;gt;&amp;#13;
   &amp;lt;td align="right"&amp;gt;Medium&amp;lt;/td&amp;gt;&amp;#13;
-  &amp;lt;td&amp;gt;&amp;#160;&amp;lt;/td&amp;gt;&amp;#13;
+  &amp;lt;td&amp;gt; &amp;lt;/td&amp;gt;&amp;#13;
   &amp;lt;td&amp;gt;xxx&amp;lt;/td&amp;gt;&amp;#13;
   &amp;lt;/tr&amp;gt;&amp;#13;
   &amp;lt;tr&amp;gt;&amp;#13;
   &amp;lt;td align="right"&amp;gt;Photo Source&amp;lt;/td&amp;gt;&amp;#13;
-  &amp;lt;td&amp;gt;&amp;#160;&amp;lt;/td&amp;gt;&amp;#13;
+  &amp;lt;td&amp;gt; &amp;lt;/td&amp;gt;&amp;#13;
   &amp;lt;td&amp;gt;xxx&amp;lt;/td&amp;gt;&amp;#13;
   &amp;lt;/tr&amp;gt;&amp;#13;
   &amp;lt;tr&amp;gt;&amp;#13;
@@ -82,7 +82,7 @@
   &lt;/model&gt;</property>
  <property name="model_file"></property>
  <property name="schema_policy">dexterity</property>
- <alias from="(Default)" to="(dynamic view)"/>
+ <alias from="(Default)" to="@@display-file"/>
  <alias from="edit" to="@@edit"/>
  <alias from="sharing" to="@@sharing"/>
  <alias from="view" to="(selected layout)"/>

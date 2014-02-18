@@ -14,20 +14,20 @@
 	    <h1 tal:content="context/title" />
             <table class="preview-image-wrapper" tal:condition="iset">
                 <tr>
-			<th>&nbsp;</th>
-			<tal:block tal:repeat="item iset">
-			<th tal:attributes="style string:width:${item/img/width}px"><a style="border:none !important;"  tal:attributes="href item/obj/absolute_url"><img tal:replace="structure python:item['img'].tag(title='More information')" /></a>
-				<div>
-					<a style="border:none !important; display:block;" tal:attributes="href item/obj/absolute_url" tal:content="item/obj/description" title="More information" />
-				</div>
-				<div>
-					<a tal:attributes="href item/obj/absolute_url"
-                       tal:content="item/obj/artist" title="More information"
-                       style="display:block;width:100%;padding-bottom:0.5em;" />
-				</div>
-			</th>
-			<th>&nbsp;</th>
-			</tal:block>
+        			<th>&nbsp;</th>
+        			<tal:block tal:repeat="item iset">
+            			<th tal:attributes="style string:width:${item/img/width}px"><a style="border:none !important;"  tal:attributes="href string:${item/obj/absolute_url}/view"><img tal:replace="structure python:item['img'].tag(title='More information')" /></a>
+            				<div>
+            					<a style="border:none !important; display:block;" tal:attributes="href string:${item/obj/absolute_url}/view" tal:content="item/obj/description" title="More information" />
+            				</div>
+            				<div>
+            					<a tal:attributes="href string:${item/obj/absolute_url}/view"
+                                   tal:content="item/obj/artist" title="More information"
+                                   style="display:block;width:100%;padding-bottom:0.5em;" />
+            				</div>
+            			</th>
+            			<th>&nbsp;</th>
+        			</tal:block>
                 </tr>
             </table>
 </div>

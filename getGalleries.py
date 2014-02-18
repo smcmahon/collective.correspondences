@@ -1,5 +1,8 @@
 from bs4 import BeautifulSoup
+from plone.app.redirector.interfaces import IRedirectionStorage
+from plone.app.textfield.value import RichTextValue
 from plone.i18n.normalizer.interfaces import IIDNormalizer
+from Products.CMFPlone.utils import safe_unicode
 from transaction import commit
 from z3c.relationfield import RelationValue
 from zope import component
@@ -8,134 +11,128 @@ from zope.component import createObject
 from zope.component import getUtility
 from zope.component.hooks import setSite
 
+import os.path
+import plone.app.uuid.utils as uuid_utils
+import re
+
+
 app = app
 
 site = app.Main
-site_outline = site['site-outline']
-site_archive = app.Main.archive
-target = app.colonialart.archive
+site_outline = site['galleries']
+site_archive = app.Main.galleries
+new_site = app.colonialart
+target = app.colonialart.galleries
 artworks = app.colonialart.artworks
+
+setSite(site)
+redirector = getUtility(IRedirectionStorage)
 
 setSite(app.colonialart)
 normalizer = getUtility(IIDNormalizer)
 intids = component.getUtility(IIntIds)
 
+npc = site_archive.portal_catalog
 
-def getArtworkMetadata(aw):
-    """ get the metadata for an old artwork from the html getRawDescription
+def resolveUID(mo):
+    setSite(site)
+    new_path = uuid_utils.uuidToPhysicalPath(mo.group(1))
+    setSite(new_site)
+    new_path = new_path.replace('/Main', '').replace('/images', '/artworks').replace('.jpg', '').replace('.jpeg', '')
+    return new_path
+
+
+def objFromURL(ref_obj, url):
+    """ given a URL in old site, find object
     """
 
-    metadata = {}
-    source = aw.getRawDescription()
-    soup = BeautifulSoup(source)
-    for row in soup.find_all('tr'):
-        els = row.get_text().split('\n')
-        els = [s.replace(u'\xa0', '').strip() for s in els]
-        els = [s for s in els if s]
-        if len(els) > 1:
-            key = els[0].lower()
-            value = els[1]
-            metadata[key] = value
-    return metadata
+    setSite(site)
+    if 'resolveuid' in url:
+        ref_obj = uuid_utils.uuidToObject(url.replace('resolveuid/', ''))
+    else:
+        try:
+            ref_obj = ref_obj.restrictedTraverse(url)
+        except (AttributeError, KeyError):
+            if 'http:' not in url:
+                # handle relative paths
+                base_path = ref_obj.absolute_url().replace('http://nohost', '')
+                if not ref_obj.isPrincipiaFolderish:
+                    # remove last component of pathname
+                    base_path = os.path.dirname(base_path)
+                print url,
+                url = os.path.normpath(os.path.join(base_path, url))
+                print base_path, url
+            # try redirect
+            ref_obj = ref_obj.restrictedTraverse(redirector.get(url))
+    return ref_obj
 
 
-def getSections(context):
-    """ extract sections from structured body text.
-        returns [{'depth':depth, 'title':title, 'currentSection':refs} ...]
+def addCorrespondence(new_gallery, ref_obj):
+    """ get correspondence data from ref_obj,
+        add the correspondence to new_gallery
     """
 
-    sections = []
-
-    s = context.getText() \
-            .replace('<p>', '') \
-            .replace('</p>', '') \
-            .replace('<strong>', '') \
-            .replace('</strong>', '') \
-            .replace('<em>', '') \
-            .replace('</em>', '') \
-            .replace('<br />', '') \
-            .replace('\r', '') \
-            .replace('&nbsp;', ' ')
-
-    for line in s.split('\n'):
-        line = line.strip()
-        if not line:
+    setSite(new_site)
+    id = normalizer.normalize(ref_obj.getId())
+    newc = createObject('correspondence')
+    newc.title = ref_obj.title
+    newc.id = id
+    correspondence = []
+    for artwork in ref_obj.listFolderContents():
+        cid = artwork.getImage().getId().split('.')[0]
+        work_obj = artworks.get(cid, None)
+        if not work_obj:
+            print "Missing:", artwork.getId()
             continue
+        correspondence.append(RelationValue(intids.getId(work_obj)))
+    newc.correspondence = correspondence
+    new_gallery[id] = newc
 
-        parts = [a.strip() for a in line.split(':')]
-        if len(parts):
-            tsplit = [a.strip() for a in parts[0].split('"')[:2]]
-            if (len(tsplit) == 2):
-                depth = tsplit[0].strip('[]')
-                title = tsplit[1].strip('')
-                if len(parts) > 1:
-                    refs = [a.strip().split('+') for a in parts[1].split(',')]
-                else:
-                    refs = []
-                sections.append({'depth': int(depth), 'title': title, 'currentSection': refs})
 
-    return sections
+sections = site_archive.objectIds()
+sections = [g for g in sections if ('-es' not in g) and (g != 'galleries')]
+for section in sections:
+    master_doc = site_archive[section]
+    print master_doc,
+    source = master_doc.getRawText()
+    soup = BeautifulSoup(source)
+    last_a = soup.find_all('table')[-1].find_all('a')[-1]
+    url = last_a['href']
 
-sections = getSections(site_outline)
+    setSite(new_site)
+    new_gallery = createObject('gallery')
+    new_gallery.title = safe_unicode(master_doc.title)
+    new_gallery.description = safe_unicode(master_doc.description)
+    tables = soup.find_all('table')
+    if tables:
+        tables[-1].decompose()
+    soup.html.unwrap()
+    soup.body.unwrap()
+    body = soup.prettify()
+    body = body.replace('/images', '/artworks')
+    body = body.replace('.jpg', '')
+    body = body.replace('.jpeg', '')
+    body = re.sub(r'resolveuid/([0-9a-f]+)', resolveUID, body)
+    new_gallery.body = RichTextValue(body, 'text/html', 'text/html')
+    new_gallery.id = master_doc.id
+    target[master_doc.id] = new_gallery
+    # get contained object
+    new_gallery = target[master_doc.id]
+    print new_gallery.title
 
-folder_stack = [target]
-last_depth = 0
-last_folder = target
-for section_position in range(0, len(sections)):
-    gallery = sections[section_position]
-    depth = gallery['depth']
-    title = gallery['title']
-    if depth > last_depth:
-        folder_stack.append(last_folder)
-        last_depth = depth
-    while depth < last_depth:
-        folder_stack.pop()
-        last_depth -= 1
-    context = folder_stack[-1]
-    id = normalizer.normalize(title)
-    # Do we have child galleries? If so, we need to create a subject folder.
-    if section_position + 1 < len(sections) and sections[section_position +
-                                                         1]['depth'] > depth:
-        context.invokeFactory('subject_folder', id, title=title)
-        context = context[id]
-        title += ': General'
-        last_folder = context
-        print id, last_folder.absolute_url()
-    # do we have correspondences of our own?
-    # if not gallery['currentSection']:
-    #     commit()
-    #     continue
-    if ': General' not in title or gallery['currentSection']:
-        context.invokeFactory('gallery', id, title=title)
-        current_subject = context[id]
-        print id, current_subject.absolute_url(),
-    # else:
-    #     commit()
-    #     continue
-    for correspondence in gallery['currentSection']:
-        for citem in correspondence:
-            if not citem:
-                continue
-            id = normalizer.normalize(citem)
-            oldc = site_archive[id]
-            newc = createObject('correspondence')
-            newc.title = citem
-            newc.id = id
-            correspondence = []
-            for artwork in oldc.listFolderContents():
-                cid = artwork.getImage().getId().split('.')[0]
-                work_obj = artworks.get(cid, None)
-                if not work_obj:
-                    print "Missing:", artwork.getId()
-                    continue
-                correspondence.append(RelationValue(intids.getId(work_obj)))
-                # # Look for a correspondence credit
-                # metadata = getArtworkMetadata(artwork)
-                # for s in ('correspondance credit', 'correspondence credit', 'correspondence source'):
-                #     if s in metadata:
-                #         newc.credit = metadata[s]
-            newc.correspondence = correspondence
-            current_subject[id] = newc
-            print id,
-    print
-    commit()
+    ref_obj = objFromURL(master_doc, url)
+    while ref_obj is not None:
+        addCorrespondence(new_gallery, ref_obj)
+        # look for additional correspondences in this chain
+        links = BeautifulSoup(ref_obj.getRawMainNavControl()).find_all('a')
+        if len(links) == 2:
+            last_a = links[-1]['href']
+            ref_obj = objFromURL(ref_obj, last_a)
+            cid = ref_obj.getId()
+            print cid
+            if ref_obj.portal_type != 'ArtworkSet':
+                ref_obj = None
+        else:
+            ref_obj = None
+
+commit()

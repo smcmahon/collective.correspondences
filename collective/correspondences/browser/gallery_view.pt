@@ -13,6 +13,8 @@
                 blocks view/getCorrespondences">
     <metal:content-core define-macro="content-core">
 
+<div tal:content="structure context/body/output" tal:condition="context/body" />
+
 <div class="major_wrapper" style="display:none" tal:condition="blocks">
 
 	<div id="scrollable_wrapper">
