@@ -112,7 +112,7 @@ for brain in artworks:
             contents = re.sub(r"\<br */?\>", ' ', contents)
             # contents = re.sub(r"(\<br */?\>)+$", '', contents)
             contents = contents.replace('\xc2\xa0', ' ').strip()
-            contents = re.sub(r'resolveuid/([0-9a-f]+)', resolveUID, contents)
+            # contents = re.sub(r'resolveuid/([0-9a-f]+)', resolveUID, contents)
             contents = safe_unicode(contents)
             if dt:
                 if dd:
@@ -158,8 +158,8 @@ for brain in artworks:
     newart.image = image
     target_folder[id] = newart
     print id,
-    if u'href' in notes:
-        print 'href'
+    if u'resolve' in notes:
+        print 'resolveuid'
     else:
         print
 commit()

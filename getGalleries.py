@@ -34,6 +34,7 @@ intids = component.getUtility(IIntIds)
 
 npc = site_archive.portal_catalog
 
+
 def resolveUID(mo):
     setSite(site)
     new_path = uuid_utils.uuidToPhysicalPath(mo.group(1))
@@ -112,7 +113,7 @@ for section in sections:
     body = body.replace('/images', '/artworks')
     body = body.replace('.jpg', '')
     body = body.replace('.jpeg', '')
-    body = re.sub(r'resolveuid/([0-9a-f]+)', resolveUID, body)
+    # body = re.sub(r'resolveuid/([0-9a-f]+)', resolveUID, body)
     new_gallery.body = RichTextValue(body, 'text/html', 'text/html')
     new_gallery.id = master_doc.id
     target[master_doc.id] = new_gallery
@@ -125,7 +126,7 @@ for section in sections:
         addCorrespondence(new_gallery, ref_obj)
         # look for additional correspondences in this chain
         links = BeautifulSoup(ref_obj.getRawMainNavControl()).find_all('a')
-        if len(links) == 2:
+        if len(links) >= 2:
             last_a = links[-1]['href']
             ref_obj = objFromURL(ref_obj, last_a)
             cid = ref_obj.getId()
