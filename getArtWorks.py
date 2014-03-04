@@ -55,15 +55,16 @@ margin = 50000
 
 def scaleImage(imageField, imageItem):
     value = imageField.getRaw(imageItem)
-    if value.width > max_size[0] or value.height > max_size[1]:
-        factor = min(float(max_size[0]) / float(value.width),
-                     float(max_size[1]) / float(value.height))
-        w = int(factor * value.width)
-        h = int(factor * value.height)
-        fvalue, format = imageField.scale(value.data, w, h)
-        return fvalue.read()
-    else:
-        return value.data
+    # if value.width > max_size[0] or value.height > max_size[1]:
+    #     factor = min(float(max_size[0]) / float(value.width),
+    #                  float(max_size[1]) / float(value.height))
+    #     w = int(factor * value.width)
+    #     h = int(factor * value.height)
+    #     fvalue, format = imageField.scale(value.data, w, h)
+    #     return fvalue.read()
+    # else:
+    #     return value.data
+    return value.data
 
 
 site = app.Main
