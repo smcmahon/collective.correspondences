@@ -15,7 +15,7 @@
     <h1 tal:condition="is_gallery"
         id="parent-fieldname-title"
         class="documentFirstHeading">
-        <span tal:replace="structure python:context.Title().replace(': ', ':<br />')">title</span>
+        <span tal:replace="structure python:context.Title().replace(': ', ':<br />', 1)">title</span>
     </h1>
     <h1 tal:condition="not:is_gallery"
         id="parent-fieldname-title"

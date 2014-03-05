@@ -14,8 +14,14 @@ class ArtworkView(BrowserView):
         rez = []
         for r in relations:
             obj = r.from_object
+            title = obj.title
+            url = obj.aq_parent.absolute_url()
+            if 'archive' in url:
+                title = 'Archive: %s' % title
+            elif 'galleries' in url:
+                title = 'Gallery: %s' % title
             rez.append({
-                'title': obj.title,
-                'url': "%s#c%s" % (obj.aq_parent.absolute_url(), obj.id),
+                'title': title,
+                'url': "%s#c%s" % (url, obj.id),
                 })
         return rez
