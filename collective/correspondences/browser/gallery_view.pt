@@ -7,6 +7,23 @@
       i18n:domain="plone">
 <body>
 
+<metal:content-title
+    fill-slot="content-title"
+    tal:define="title context/Title;
+                is_gallery python:title.find('Gallery') == 0;
+                ">
+    <h1 tal:condition="is_gallery"
+        id="parent-fieldname-title"
+        class="documentFirstHeading">
+        <span tal:replace="structure python:context.Title().replace(': ', ':<br />')">title</span>
+    </h1>
+    <h1 tal:condition="not:is_gallery"
+        id="parent-fieldname-title"
+        class="documentFirstHeading">
+        <span tal:replace="title">title</span>
+    </h1>
+</metal:content-title>
+
 <metal:content-core
     fill-slot="content-core"
     tal:define="portal_url string:${context/@@plone_portal_state/portal_url};
