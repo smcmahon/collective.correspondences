@@ -19,7 +19,7 @@ class ArtworkView(BrowserView):
             if 'archive' in url:
                 title = 'Archive: %s' % title
             elif 'galleries' in url:
-                title = 'Gallery: %s' % title
+                title = 'Galleries: %s' % title
             rez.append({
                 'title': title,
                 'url': "%s#c%s" % (url, obj.id),
