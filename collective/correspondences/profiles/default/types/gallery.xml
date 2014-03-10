@@ -13,7 +13,6 @@
  <property name="filter_content_types">True</property>
  <property name="allowed_content_types">
   <element value="correspondence"/>
-  <element value="gallery"/>
  </property>
  <property name="allow_discussion">False</property>
  <property name="default_view">@@gallery_view</property>
@@ -32,13 +31,13 @@
  <property name="schema"></property>
  <property name="model_source">&lt;?xml version='1.0' encoding='utf8'?&gt;
   &lt;model xmlns:marshal="http://namespaces.plone.org/supermodel/marshal" xmlns:indexer="http://namespaces.plone.org/supermodel/indexer" xmlns:security="http://namespaces.plone.org/supermodel/security" xmlns:form="http://namespaces.plone.org/supermodel/form" xmlns="http://namespaces.plone.org/supermodel/schema"&gt;
-    &lt;schema&gt;
-      &lt;field name="body" type="plone.app.textfield.RichText"&gt;
-        &lt;description/&gt;
-        &lt;required&gt;False&lt;/required&gt;
-        &lt;title&gt;Body Text&lt;/title&gt;
-      &lt;/field&gt;
-    &lt;/schema&gt;
+  &lt;schema&gt;
+  &lt;field name="body" type="plone.app.textfield.RichText"&gt;
+  &lt;description/&gt;
+  &lt;required&gt;False&lt;/required&gt;
+  &lt;title&gt;Body Text&lt;/title&gt;
+  &lt;/field&gt;
+  &lt;/schema&gt;
   &lt;/model&gt;</property>
  <property name="model_file"></property>
  <property name="schema_policy">dexterity</property>

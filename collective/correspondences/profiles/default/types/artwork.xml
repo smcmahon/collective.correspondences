@@ -22,25 +22,33 @@
  <property name="klass">plone.dexterity.content.Container</property>
  <property name="behaviors">
   <element value="plone.app.content.interfaces.INameFromTitle"/>
-  <element value="plone.app.dexterity.behaviors.metadata.IBasic"/>
   <element
      value="collective.dexteritytextindexer.behavior.IDexterityTextIndexer"/>
  </property>
  <property name="schema"></property>
  <property name="model_source">&lt;?xml version='1.0' encoding='utf8'?&gt;
   &lt;model xmlns:indexer="http://namespaces.plone.org/supermodel/indexer" xmlns:security="http://namespaces.plone.org/supermodel/security" xmlns:marshal="http://namespaces.plone.org/supermodel/marshal" xmlns:form="http://namespaces.plone.org/supermodel/form" xmlns="http://namespaces.plone.org/supermodel/schema"&gt;
-    &lt;schema&gt;
-      &lt;field name="image" type="plone.namedfile.field.NamedBlobImage" marshal:primary="true"&gt;
-        &lt;description/&gt;
-        &lt;title&gt;Image&lt;/title&gt;
-      &lt;/field&gt;
-      &lt;field name="artist" type="zope.schema.TextLine" indexer:searchable="true"&gt;
-        &lt;description&gt;Artist is separately indexed.&lt;/description&gt;
-        &lt;required&gt;False&lt;/required&gt;
-        &lt;title&gt;Artist&lt;/title&gt;
-      &lt;/field&gt;
-      &lt;field name="text" type="plone.app.textfield.RichText" indexer:searchable="true"&gt;
-        &lt;default&gt;&amp;lt;dl&amp;gt;&amp;#13;
+  &lt;schema&gt;
+  &lt;field name="title" type="zope.schema.TextLine"&gt;
+  &lt;description&gt;PESSCA Identifier&lt;/description&gt;
+  &lt;required&gt;True&lt;/required&gt;
+  &lt;title&gt;Identifier&lt;/title&gt;
+  &lt;/field&gt;
+  &lt;field name="description" type="zope.schema.Text"&gt;
+  &lt;required&gt;False&lt;/required&gt;
+  &lt;title&gt;Title&lt;/title&gt;
+  &lt;/field&gt;
+  &lt;field name="image" type="plone.namedfile.field.NamedBlobImage" marshal:primary="true"&gt;
+  &lt;description/&gt;
+  &lt;title&gt;Image&lt;/title&gt;
+  &lt;/field&gt;
+  &lt;field name="artist" type="zope.schema.TextLine" indexer:searchable="true"&gt;
+  &lt;description&gt;Shows under artwork titles; separately indexed.&lt;/description&gt;
+  &lt;required&gt;False&lt;/required&gt;
+  &lt;title&gt;Artist&lt;/title&gt;
+  &lt;/field&gt;
+  &lt;field name="text" type="plone.app.textfield.RichText" indexer:searchable="true"&gt;
+  &lt;default&gt;&amp;lt;dl&amp;gt;&amp;#13;
   &amp;lt;dt&amp;gt;Artist&amp;lt;/dt&amp;gt;&amp;#13;
   &amp;lt;dd&amp;gt;xxx&amp;lt;/dd&amp;gt;&amp;#13;
   &amp;lt;dt&amp;gt;Title&amp;lt;/dt&amp;gt;&amp;#13;
@@ -49,20 +57,24 @@
   &amp;lt;dd&amp;gt;xxx&amp;lt;/dd&amp;gt;&amp;#13;
   &amp;lt;dt&amp;gt;Medium&amp;lt;/dt&amp;gt;&amp;#13;
   &amp;lt;dd&amp;gt;xxx&amp;lt;/dd&amp;gt;&amp;#13;
+  &amp;lt;dt&amp;gt;Location&amp;lt;/dt&amp;gt;&amp;#13;
+  &amp;lt;dd&amp;gt;xxx&amp;lt;/dd&amp;gt;&amp;#13;
   &amp;lt;dt&amp;gt;Photo Source&amp;lt;/dt&amp;gt;&amp;#13;
+  &amp;lt;dd&amp;gt;xxx&amp;lt;/dd&amp;gt;&amp;#13;
+  &amp;lt;dt&amp;gt;Correspondence Credit&amp;lt;/dt&amp;gt;&amp;#13;
   &amp;lt;dd&amp;gt;xxx&amp;lt;/dd&amp;gt;&amp;#13;
   &amp;lt;dt&amp;gt;Item&amp;lt;/dt&amp;gt;&amp;#13;
   &amp;lt;dd&amp;gt;xxx&amp;lt;/dd&amp;gt;&amp;#13;
   &amp;lt;/dl&amp;gt;&lt;/default&gt;
-        &lt;description&gt;Notes are searchable, but not separately indexed.&lt;/description&gt;
-        &lt;required&gt;False&lt;/required&gt;
-        &lt;title&gt;Notes&lt;/title&gt;
-      &lt;/field&gt;
-    &lt;/schema&gt;
+  &lt;description&gt;Notes are searchable, but not separately indexed.&lt;/description&gt;
+  &lt;required&gt;False&lt;/required&gt;
+  &lt;title&gt;Notes&lt;/title&gt;
+  &lt;/field&gt;
+  &lt;/schema&gt;
   &lt;/model&gt;</property>
  <property name="model_file"></property>
  <property name="schema_policy">dexterity</property>
- <alias from="(Default)" to="@@display-file"/>
+ <alias from="(Default)" to="@@artwork_view"/>
  <alias from="edit" to="@@edit"/>
  <alias from="sharing" to="@@sharing"/>
  <alias from="view" to="(selected layout)"/>
