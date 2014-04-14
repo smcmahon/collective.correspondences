@@ -27,6 +27,7 @@
   <element value="plone.app.dexterity.behaviors.metadata.IBasic"/>
   <element
      value="plone.app.dexterity.behaviors.nextprevious.INextPreviousEnabled"/>
+  <element value="plone.app.content.interfaces.INameFromTitle"/>
  </property>
  <property name="schema"></property>
  <property name="model_source">&lt;?xml version='1.0' encoding='utf8'?&gt;

@@ -30,19 +30,12 @@ class GalleryView(BrowserView):
             item['url'] = obj.absolute_url()
             item['description'] = obj.description
             item['id'] = obj.getId()
-            i0, i1 = getScaledCorrespondenceImages(obj.correspondence,
-                                                   max_height=128)
-#            ctags = []
-#            for artwork_ref in obj.correspondence:
-#                aobj = artwork_ref.to_object
-#                scales = getMultiAdapter(
-#                    (aobj, self.request),
-#                    name=u'images'
-#                )
-#                ctags.append(scales.tag('image', scale='thumb'))
-#            item['image_tags'] = ctags
-            item['image_tags'] = [i0['img'].tag(), i1['img'].tag()]
-            rez.append(item)
+            items = getScaledCorrespondenceImages(obj.correspondence,
+                                                  max_height=128)
+            if len(items) == 2:
+                item['image_tags'] = [items[0]['img'].tag(), items[1]['img'].tag()]
+                rez.append(item)
+
         # Break into groups for scrollable
         grouped = []
         while rez:

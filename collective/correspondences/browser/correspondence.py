@@ -11,6 +11,9 @@ def scaleBoth(c0, c1, max_width, max_height):
 def getScaledCorrespondenceImages(refs, max_height, max_wide=0):
     # make images as large as possible while being same height.
 
+    if len(refs) != 2:
+        return []
+
     if max_wide == 0:
         max_wide = 2 * max_height
 
@@ -42,7 +45,10 @@ def getScaledCorrespondenceImages(refs, max_height, max_wide=0):
     scaling = c1.restrictedTraverse('@@images')
     i1 = scaling.scale(fieldname='image', width=t1[0], height=t1[1])
 
-    return [{'img': i0, 'obj': c0}, {'img': i1, 'obj': c1}]
+    if i0 and i1:
+        return [{'img': i0, 'obj': c0}, {'img': i1, 'obj': c1}]
+    else:
+        return []
 
 
 class CorrespondenceView(BrowserView):
