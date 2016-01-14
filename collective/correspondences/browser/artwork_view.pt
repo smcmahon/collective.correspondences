@@ -65,7 +65,9 @@
 
 <div tal:content="structure context/text/output"/>
 
-<dl tal:define="relations view/getRelationsTo" tal:condition="relations">
+<dl tal:define="relations view/getRelationsTo"
+    tal:condition="relations"
+    tal:on-error="string:(Correspondences Error)">
     <dt>Correspondences</dt>
     <dd tal:repeat="item relations">
         <a tal:attributes="href item/url" tal:content="item/title">
