@@ -46,11 +46,19 @@
 
   <browser:page
     for="*"
-    class=".archive.ArchiveView"
+    class=".archive.ArchiveView2"
     name="archive_view"
-    template="archive_view.pt"
+    template="archive_view2.pt"
     permission="zope.Public"
     />
+
+  <!-- browser:page
+    for="*"
+    class=".archive.ArchiveView2"
+    name="archive_view2"
+    template="archive_view2.pt"
+    permission="zope.Public"
+    / -->
 
   <browser:page
     for="*"

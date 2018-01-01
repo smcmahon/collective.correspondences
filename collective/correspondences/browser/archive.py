@@ -1,12 +1,10 @@
 from Acquisition import aq_inner
 from plone.app.layout.navigation.navtree import buildFolderTree
-from Products.CMFPlone.browser.interfaces import ISiteMap
+from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
-from zope.interface import implements
 
 
 class ArchiveView(BrowserView):
-    implements(ISiteMap)
 
     def siteMap(self):
 
@@ -22,6 +20,8 @@ class ArchiveView(BrowserView):
         # Caching this might be a good optimization, but we'd be caching
         # all the subject folders as separate cache items.
         rez = buildFolderTree(context, obj=context, query=query)
+
+        return [], 0
 
         # This flattening is more simple expressed via recursion, but it's hard to avoid
         # memory leaks.
@@ -88,3 +88,69 @@ class ArchiveView(BrowserView):
                 ))
 
         return galleries, 0
+
+
+def scmp(a, b):
+    return cmp(a['spos'], b['spos'])
+
+
+class ArchiveView2(BrowserView):
+    """ solve memory leaks """
+
+    def siteMap(self):
+        context = aq_inner(self.context)
+        context_path = context.getPhysicalPath()
+        catalog = getToolByName(context, 'portal_catalog')
+
+        results = catalog.searchResults(
+            path={'query': '/'.join(context_path), 'depth': 50},
+            portal_type=['subject_folder', 'gallery'],
+            sort_on='getObjPositionInParent',
+            sort_order='asc',
+        )
+
+        subjects = {}
+        count = 0
+        for brain in results:
+            path = brain.getPath()
+            subjects[path] = dict(
+                path=path,
+                url=brain.getURL(),
+                title=brain.Title,
+                pos=count,
+                spos='{:05d}'.format(count),
+                subc=0,
+                myc=0,
+            )
+            count += 1
+
+        values = subjects.values()
+        for val in values:
+            path = val['path']
+            while path:
+                path = path[:path.rfind('/')]
+                rez = subjects.get(path)
+                if rez is None:
+                    break
+                val['spos'] = "{:05d}{}".format(rez['pos'], val['spos'])
+        values.sort(scmp)
+
+        # count correspondences
+        results = catalog.searchResults(
+            path={'query': '/'.join(context_path), 'depth': 50},
+            portal_type='correspondence',
+        )
+        for brain in results:
+            first = True
+            path = brain.getPath()
+            while path:
+                path = path[:path.rfind('/')]
+                rez = subjects.get(path)
+                if rez is None:
+                    break
+                rez['subc'] += 1
+                if first:
+                    rez['myc'] += 1
+                    first = False
+
+        return values
